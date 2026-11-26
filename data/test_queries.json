@@ -1,0 +1,366 @@
+[
+ {
+  "id": "Q01",
+  "query": "when did we finalize the holiday destination",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_00951"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q02",
+  "query": "who booked the train tickets",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01040"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q03",
+  "query": "did we book the place to stay",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01111"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q04",
+  "query": "who is driving during the vacation",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01156"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q05",
+  "query": "is anyone bringing warm clothes",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01712"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q06",
+  "query": "how much is the rent per person",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02427"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q07",
+  "query": "who agreed to pay the security deposit",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02522"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q08",
+  "query": "what framework are we using for the backend",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03052"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q09",
+  "query": "when is the project presentation",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03866"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q10",
+  "query": "who is ordering food tonight",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03322"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q11",
+  "query": "where are we meeting before the journey",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01896"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q12",
+  "query": "when is the internet being installed",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02799"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q13",
+  "query": "who is the cook",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02758"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q14",
+  "query": "who bought the website address",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03229"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q15",
+  "query": "which house are we looking at",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02381"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q16",
+  "query": "has the app been deployed",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03906"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q17",
+  "query": "whose turn is it to pay the electricity bill",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_02846"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q18",
+  "query": "do we need any id proof",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_01761"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q19",
+  "query": "who needs help with the slides",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_03613"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q20",
+  "query": "did we win the hackathon",
+  "shape": "semantic",
+  "expected_ids": [
+   "MSG_04035"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q21",
+  "query": "what did Priya say about the budget",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_01130"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q22",
+  "query": "what did Arjun say about the broker commission",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_02469"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q23",
+  "query": "what did Vikram suggest for the database",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_03100"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q24",
+  "query": "what did Neha prepare for the pitch",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_03680"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q25",
+  "query": "what did Sneha say about the accommodation options",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_00970"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q26",
+  "query": "what did Ananya say about restaurants",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_01940"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q27",
+  "query": "what did Kabir say about the celebration",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_03972"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q28",
+  "query": "what did Rohan say about reaching the venue",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_04027"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q29",
+  "query": "what did Vikram say about search speed",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_03466"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q30",
+  "query": "what did Arjun say about fuel",
+  "shape": "attributed",
+  "expected_ids": [
+   "MSG_01900"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q31",
+  "query": "what did we discuss in December regarding warm jackets",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_01712",
+   "MSG_01812"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q32",
+  "query": "what did we decide in November about the trip",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_00951",
+   "MSG_01111"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q33",
+  "query": "who is collecting money on November 14",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_01087"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q34",
+  "query": "what wifi installation was scheduled in late January",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_02799"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q35",
+  "query": "what did the group say about rent in January",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_02427",
+   "MSG_02469"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q36",
+  "query": "what was said about the demo in March",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_03866",
+   "MSG_03972"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q37",
+  "query": "early February who talked about database",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_03100"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q38",
+  "query": "what was ordered in mid December",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_01812"
+  ],
+  "zero_overlap": true
+ },
+ {
+  "id": "Q39",
+  "query": "who met us at the chalet on December 18",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_01905"
+  ],
+  "zero_overlap": false
+ },
+ {
+  "id": "Q40",
+  "query": "what did we decide in February about the tech stack",
+  "shape": "temporal",
+  "expected_ids": [
+   "MSG_03052"
+  ],
+  "zero_overlap": true
+ }
+]

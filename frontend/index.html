@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search a Group Chat Properly</title>
+<style>
+  :root{--bg:#f6f7f9;--card:#fff;--ink:#1c1f24;--mute:#6b7280;--line:#e5e7eb;--accent:#2f6fed;--hit:#fff6d6;--hitline:#f2c94c}
+  @media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a20;--ink:#e8eaed;--mute:#9aa3af;--line:#262b33;--accent:#6b9bff;--hit:#3a3317;--hitline:#b8963a}}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 16px 80px}
+  h1{font-size:26px;margin:0 0 4px} .sub{color:var(--mute);margin:0 0 20px}
+  form{display:flex;gap:8px}
+  input[type=text]{flex:1;padding:12px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+  button{padding:10px 16px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-size:15px;cursor:pointer}
+  button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;color:var(--mute);font-size:13px}
+  select{padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 18px}
+  .chip{padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--card);cursor:pointer;font-size:13px;color:var(--ink)}
+  .chip:hover{border-color:var(--accent)} .chip small{color:var(--mute);margin-right:4px}
+  .intent{font-size:13px;color:var(--mute);margin:10px 0}
+  .tag{display:inline-block;padding:1px 8px;margin:0 4px 4px 0;border-radius:999px;background:var(--line);font-size:12px}
+  .result{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden}
+  .rhead{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--mute)}
+  .msg{display:flex;gap:10px;padding:8px 14px;align-items:flex-start}
+  .msg.target{background:var(--hit);border-left:3px solid var(--hitline)}
+  .av{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:13px}
+  .meta{font-size:12px;color:var(--mute)} .meta b{color:var(--ink)}
+  .empty,.err{color:var(--mute);text-align:center;padding:30px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+  td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  .ok{color:#18a058;font-weight:600} .bad{color:#d03050;font-weight:600}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .stat b{display:block;font-size:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Search a Group Chat Properly</h1>
+  <p class="sub" id="meta">Search by meaning, not just words — English or Hinglish.</p>
+
+  <form id="f">
+    <input type="text" id="q" placeholder='e.g. "who agreed to pay the security deposit"' autocomplete="off" autofocus>
+    <button>Search</button>
+  </form>
+  <div class="filters">
+    <label>Person <select id="sender"><option value="">anyone</option></select></label>
+    <label>Month <select id="month"><option value="">any</option>
+      <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+      <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option></select></label>
+    <label>Context ± <select id="ctx"><option>2</option><option selected>3</option><option>4</option></select></label>
+    <button type="button" class="ghost" id="bench">Run 40-query benchmark</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div id="out"></div>
+</div>
+
+<script>
+const CHIPS = [
+  ["zero-overlap","when did we finalize the holiday destination"],
+  ["zero-overlap","who agreed to pay the security deposit"],
+  ["zero-overlap","what framework are we using for the backend"],
+  ["zero-overlap","how much is the rent per person"],
+  ["zero-overlap","is anyone bringing warm clothes"],
+  ["attributed","what did Priya say about the budget"],
+  ["attributed","what did Vikram suggest for the database"],
+  ["attributed","what did Arjun say about the broker commission"],
+  ["temporal","what did we discuss in December regarding warm jackets"],
+  ["temporal","who is collecting money on November 14"],
+  ["temporal","what wifi installation was scheduled in late January"],
+];
+const COLORS = ["#e4572e","#17a398","#8e6c8a","#f3a712","#2f6fed","#d1495b","#00798c","#6a994e"];
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let people = [];
+const color = n => COLORS[Math.max(0, people.indexOf(n)) % COLORS.length];
+
+CHIPS.forEach(([kind, text]) => {
+  const c = document.createElement("span");
+  c.className = "chip"; c.innerHTML = `<small>${kind}</small>${esc(text)}`;
+  c.onclick = () => { $("q").value = text; search(); };
+  $("chips").appendChild(c);
+});
+
+fetch("/api/meta").then(r => r.json()).then(m => {
+  people = m.participants;
+  $("meta").textContent = `${m.total_messages.toLocaleString()} messages · ${m.participants.length} people · ${m.first_message.slice(0,10)} → ${m.last_message.slice(0,10)}`;
+  m.participants.forEach(p => $("sender").insertAdjacentHTML("beforeend", `<option>${p}</option>`));
+}).catch(() => {});
+
+$("f").onsubmit = e => { e.preventDefault(); search(); };
+
+async function search() {
+  const query = $("q").value.trim(); if (!query) return;
+  $("out").innerHTML = '<div class="empty">Searching…</div>';
+  try {
+    const r = await fetch("/api/search", {method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({query, top_k: 5, context_window: +$("ctx").value,
+        sender: $("sender").value || null, month: $("month").value ? +$("month").value : null})});
+    render(await r.json());
+  } catch (err) { $("out").innerHTML = '<div class="err">Could not reach the server.</div>'; }
+}
+
+function render(d) {
+  const i = d.intent, tags = [`shape: ${i.query_shape}`];
+  if (i.sender) tags.push(`person: ${i.sender}`);
+  if (i.month) tags.push(`month: ${i.month}` + (i.day ? `, day ${i.day}` : i.part ? ` (${i.part})` : ""));
+  i.concepts.forEach(c => tags.push(`concept: ${c}`));
+  i.exact_terms.forEach(t => tags.push(`exact: ${t}`));
+  if (i.filters_relaxed) tags.push("filters relaxed");
+  if (i.browse_mode) tags.push("no topic words: showing that period chronologically");
+  let html = `<div class="intent">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>`;
+  if (!d.hits.length) html += '<div class="empty">No matches. Try different words.</div>';
+  d.hits.forEach((h, n) => {
+    html += `<div class="result"><div class="rhead"><span>#${n+1} · ${esc(h.message.timestamp)}</span><span>score ${h.score} · ${h.matched_concepts.map(esc).join(", ") || "exact words"}</span></div>`;
+    h.thread.forEach(m => {
+      html += `<div class="msg${m.is_target ? " target" : ""}"><div class="av" style="background:${color(m.sender)}">${esc(m.sender[0])}</div>
+        <div><div class="meta"><b>${esc(m.sender)}</b> · ${esc(m.timestamp.slice(5,16))}</div>${esc(m.text)}</div></div>`;
+    });
+    html += "</div>";
+  });
+  $("out").innerHTML = html;
+}
+
+$("bench").onclick = async () => {
+  $("out").innerHTML = '<div class="empty">Running benchmark…</div>';
+  const b = await (await fetch("/api/benchmark")).json(), o = b.overall, z = b.zero_overlap;
+  const pct = (a, n) => (100 * a / n).toFixed(1) + "%";
+  let html = `<div class="stats">
+    <div class="stat"><b>${pct(o.top1,o.n)}</b>Top-1 (${o.top1}/${o.n})</div>
+    <div class="stat"><b>${pct(o.recall5,o.n)}</b>Recall@5 (${o.recall5}/${o.n})</div>
+    <div class="stat"><b>${o.mrr}</b>MRR</div>
+    <div class="stat"><b>${z.recall5}/${z.n}</b>Zero-overlap Recall@5</div></div>
+    <table><tr><th>ID</th><th>Query</th><th>Shape</th><th>Rank</th></tr>`;
+  b.rows.forEach(r => {
+    const cls = r.rank === 1 ? "ok" : "bad";
+    html += `<tr><td>${r.id}</td><td>${esc(r.query)}${r.zero_overlap ? ' <span class="tag">0 overlap</span>' : ""}</td><td>${r.shape}</td><td class="${cls}">${r.rank ? "#" + r.rank : "miss"}</td></tr>`;
+  });
+  $("out").innerHTML = html + "</table>";
+};
+</script>
+</body>
+</html>
